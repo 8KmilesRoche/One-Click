@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:resource name="TestingProject" path="/8KmilesRoche/One-Click/compare/TestingProject" id="3f5b9e96-056b-4bf6-9516-568e626ed9bf" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="3f5b9e96-056b-4bf6-9516-568e626ed9bffileName">TestingProject</con:setting>
+  </con:settings>
+  <con:parameters/>
+  <con:method name="TestingProject" id="22b5a9c5-d906-49a8-a087-930bf5d4ae9c" method="GET">
+    <con:settings/>
+    <con:parameters/>
+    <con:representation type="RESPONSE">
+      <con:mediaType>text/html; charset=utf-8</con:mediaType>
+      <con:status>200</con:status>
+      <con:params/>
+      <con:element>html</con:element>
+    </con:representation>
+    <con:request name="Request 1" id="9ec63b7d-5013-4246-9458-6d1b0c895ab2" mediaType="application/json">
+      <con:settings>
+        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+      </con:settings>
+      <con:endpoint>https://github.com</con:endpoint>
+      <con:request/>
+      <con:originalUri>https://github.com/8KmilesRoche/One-Click/compare/TestingProject</con:originalUri>
+      <con:credentials>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:request>
+  </con:method>
+</con:resource>
