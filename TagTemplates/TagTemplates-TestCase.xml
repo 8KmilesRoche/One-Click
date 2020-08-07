@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="820a0901-9639-4d66-8969-81dfd5410235" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="TagTemplates-TestCase" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="820a0901-9639-4d66-8969-81dfd5410235fileName">TagTemplates-TestCase</con:setting>
+  </con:settings>
+  <con:savedRecentRuns>1</con:savedRecentRuns>
+  <con:testStep type="groovy" name="POST" id="504c6416-23c4-4576-a64b-4224bb485f52">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/ '
+def method = 'POST'
+def stepName = 'Create Tag Template Record'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+def jsonText='{ "name": "Lakshmr1","dataset_id":"AQ123", "mandatory_tag_ids": "[123321]","optional_tag_ids": "[AQ231123]"}'
+reqheader.setRequestContent(jsonText)
+
+responseContent=tc.testSuite.getTestCaseByName("TagTemplates-TestCase").getTestStepByName(stepName).getPropertyValue("response")</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Create Tag Template Record" id="9cf348c1-55ed-4de0-830b-4c003911b1c5">
+    <con:settings/>
+    <con:config method="POST" xsi:type="con:HttpRequest" id="021c3141-759c-464b-950d-7ea55cba5f58" name="Create Tag Template Record" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings>
+        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+      </con:settings>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/</con:endpoint>
+      <con:request>{ "name": "Lakshmr1","approved_by":"admin", "approved_data_modalities": "clinical","data_owner": "dap2_test@roche.com","protocal_number": "GO1234","therapeutic_area":"Ophthal","data_source":"external"}</con:request>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="DELETE" id="dd4626bd-351f-4b0e-a3f3-e70b768f953d">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+def job_id='AQ123'
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/'+job_id
+def method = 'DELETE'
+def stepName = 'Delete Tag Template Details'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+try{
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+headers.put( "Authorization ", "Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ") 
+responseContent=tc.testSuite.getTestCaseByName("TagTemplates-TestCase").getTestStepByName(stepName).getHttpRequest().setRequestHeaders(headers).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse == '200')
+{
+    assert(slurperResponse == '200')
+}
+else
+{
+    AssertionResult.setFailureMessage('Invalid data: 400/Data not found 404 ')
+}
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Delete Tag Template Details" id="581140c8-159c-4b6b-a79c-d9f1f91265e2">
+    <con:settings/>
+    <con:config method="DELETE" xsi:type="con:HttpRequest" id="b978973b-599f-47cf-85c8-901f6f67b845" name="Delete Tag Template Details" mediaType="application/json" postQueryString="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings>
+        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization " value="Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ" xmlns="http://eviware.com/soapui/config"/></con:setting>
+      </con:settings>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/BQ123</con:endpoint>
+      <con:request/>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="GET" id="c97fe78b-a9a5-4177-ba89-dca05b1f69f8">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def job_id='AQ785'
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/'+job_id
+
+def method = 'GET'
+def stepName = 'Get Tag Templates Details'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+try{
+
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+headers.put( "Authorization ", "Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ") 
+responseContent=tc.testSuite.getTestCaseByName("TagTemplates-TestCase").getTestStepByName(stepName).getHttpRequest().setRequestHeaders(headers).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse == '200')
+{
+    assert(slurperResponse == '200')
+}
+else
+{
+    AssertionResult.setFailureMessage('Invalid data: 400/Data not found 404 ')
+}
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Get Tag Templates Details" id="5ac3cc6e-992f-4e33-9b13-a644d7c0aa63">
+    <con:settings/>
+    <con:config method="GET" xsi:type="con:HttpRequest" id="25a94b48-6fc5-4214-981c-5a8ba95a09b4" name="Get Tag Templates Details" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/AQ785</con:endpoint>
+      <con:request/>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="UPDATE" id="7e4ab3a4-36de-4d00-a3f3-c1688bb51905">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/'
+
+def method = 'PUT'
+def stepName = 'Update Tag Templates  Record'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+def jsonText='{ "name": "Lakshmr1","dataset_id":"AQ123", "mandatory_tag_ids": "[123321]","optional_tag_ids": "[AQ231123]"}'
+reqheader.setRequestContent(jsonText)
+
+responseContent=tc.testSuite.getTestCaseByName("TagTemplates-TestCase").getTestStepByName(stepName).getPropertyValue("response")</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Update Tag Templates  Record" id="2ba6ff93-cf52-466f-9e4a-76381b839146">
+    <con:settings/>
+    <con:config method="PUT" xsi:type="con:HttpRequest" id="8f96495d-c298-4cf2-9056-43aeb4facfaa" name="Update Tag Templates  Record" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/</con:endpoint>
+      <con:request>{ "name": "Lakshmr1","dataset_id":"AQ123", "mandatory_tag_ids": "[123321]","optional_tag_ids": "[AQ231123]"}</con:request>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:properties/>
+  <con:reportParameters/>
+</con:testCase>

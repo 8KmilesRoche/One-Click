@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite id="c4f67014-658e-4e60-a879-87819994a8cd" name="TagTemplates" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="c4f67014-658e-4e60-a879-87819994a8cdfileName">TagTemplates</con:setting>
+  </con:settings>
+  <con:savedRecentRuns>1</con:savedRecentRuns>
+  <con:runType>SEQUENTIAL</con:runType>
+  <con:properties/>
+  <con:reportParameters/>
+</con:testSuite>

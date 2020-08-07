@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="0e0ff874-c9be-40ed-a97a-cd33c1b8df3e" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="DataSet-TestCase" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="0e0ff874-c9be-40ed-a97a-cd33c1b8df3efileName">DataSet-TestCase</con:setting>
+  </con:settings>
+  <con:savedRecentRuns>1</con:savedRecentRuns>
+  <con:testStep type="groovy" name="POST" id="0d25e871-a706-496a-b9c9-77639a045e1f">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/dataset/ '
+def method = 'POST'
+def stepName = 'Data Set Record Create'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+def jsonText='{ "name": "Lakshmr1","approved_by":"admin", "approved_data_modalities": "clinical","data_owner": "dap2_test@roche.com","protocal_number": "GO1234","therapeutic_area":"Ophthal","data_source":"external"}'
+reqheader.setRequestContent(jsonText)
+
+responseContent=tc.testSuite.getTestCaseByName("DataSet-TestCase").getTestStepByName(stepName).getPropertyValue("response")</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="DELETE" id="b3aee02a-2092-42e3-a25d-724f93f1f6d6">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+def job_id='12345'
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/dataset/'+job_id
+def method = 'DELETE'
+def stepName = 'Data Set Record Delete'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+try{
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+headers.put( "Authorization ", "Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ") 
+responseContent=tc.testSuite.getTestCaseByName("DataSet-TestCase").getTestStepByName(stepName).getHttpRequest().setRequestHeaders(headers).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse == '200')
+{
+    assert(slurperResponse == '200')
+}
+else
+{
+    AssertionResult.setFailureMessage('Invalid data: 400/Data not found 404 ')
+}
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="GET" id="6ca23c6b-548b-43ad-be22-833b5bc5a4c5">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+ 
+
+def job_id='12345'
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/dataset/'+job_id
+
+ 
+
+def method = 'GET'
+def stepName = 'Data Set Record Get'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+try{
+
+ 
+
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+headers.put( "Authorization ", "Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ") 
+responseContent=tc.testSuite.getTestCaseByName("DataSet-TestCase").getTestStepByName(stepName).getHttpRequest().setRequestHeaders(headers).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse == '200')
+{
+    assert(slurperResponse == '200')
+}
+else
+{
+    AssertionResult.setFailureMessage('Invalid data: 400/Data not found 404 ')
+}
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Data Set Record Create" id="5b3786ae-4435-489b-8b71-add2a91946a9">
+    <con:settings/>
+    <con:config method="POST" xsi:type="con:HttpRequest" id="dfa6a625-022d-4634-b337-370f2d8dbab3" name="Data Set Record Create" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/dataset/</con:endpoint>
+      <con:request>{ "name": "Lakshmr1","approved_by":"admin", "approved_data_modalities": "clinical","data_owner": "dap2_test@roche.com","protocal_number": "GO1234","therapeutic_area":"Ophthal","data_source":"external"}</con:request>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Data Set Record Delete" id="23a14b4a-830c-4c2a-a5b9-c80ae86c91ab">
+    <con:settings/>
+    <con:config method="DELETE" xsi:type="con:HttpRequest" id="9759adaa-66d2-485f-977f-209cf94e78ca" name="Data Set Record Delete" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings>
+        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization " value="Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ" xmlns="http://eviware.com/soapui/config"/></con:setting>
+      </con:settings>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/dataset/12345</con:endpoint>
+      <con:request/>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Data Set Record Get" id="c9cc9e56-53bf-4de8-b4c6-d813f915a0c6">
+    <con:settings/>
+    <con:config method="GET" xsi:type="con:HttpRequest" id="61c23aac-4562-4e51-bf01-e287aa849c52" name="Data Set Record Get" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings>
+        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization " value="Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ" xmlns="http://eviware.com/soapui/config"/></con:setting>
+      </con:settings>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/dataset/12345</con:endpoint>
+      <con:request/>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="UPDATE" id="d8f6e1d6-14f9-47e5-ba59-cb0fe9f6ad08">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/dataset/'
+
+def method = 'PUT'
+def stepName = 'Update the Data Set Record'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+def jsonText='{ "name": "Rokesh","approved_by":"admin", "approved_data_modalities": "clinical","data_owner": "lakshmr1@roche.com","protocal_number": "GO1234","therapeutic_area":"Ophthal","data_source":"external"}'
+reqheader.setRequestContent(jsonText)
+
+responseContent=tc.testSuite.getTestCaseByName("DataSet-TestCase").getTestStepByName(stepName).getPropertyValue("response")</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Update the Data Set Record" id="2510f6d4-8d31-42a1-82d4-2f2d8ef2b0a6">
+    <con:settings/>
+    <con:config method="PUT" xsi:type="con:HttpRequest" id="b154b0d3-8b8a-4004-aaec-9f6c0e25250a" name="Update the Data Set Record" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/dataset/</con:endpoint>
+      <con:request>{ "name": "Rokesh","approved_by":"admin", "approved_data_modalities": "clinical","data_owner": "lakshmr1@roche.com","protocal_number": "GO1234","therapeutic_area":"Ophthal","data_source":"external"}</con:request>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:properties/>
+  <con:reportParameters/>
+</con:testCase>

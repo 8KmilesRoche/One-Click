@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="5d8f84a2-0178-4e44-a054-20d5fa4a5f36" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Tags-TestCase" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="5d8f84a2-0178-4e44-a054-20d5fa4a5f36fileName">Tags-TestCase</con:setting>
+  </con:settings>
+  <con:testStep type="groovy" name="POST" id="2fdeb784-dbb3-4f2b-ad46-301d2961f247">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tag/ '
+def method = 'POST'
+def stepName = 'Create Tag  Record'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+def jsonText='{ "name": "Lakshmr1","value":"PHC_IX"}'
+reqheader.setRequestContent(jsonText)
+
+responseContent=tc.testSuite.getTestCaseByName("Tags-TestCase").getTestStepByName(stepName).getPropertyValue("response")</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Create Tag  Record" id="c799864d-944c-40a2-8a7d-bac90f3823ae">
+    <con:settings/>
+    <con:config method="POST" xsi:type="con:HttpRequest" id="ee0400bd-8d06-4b37-b512-1e59c6218268" name="Create Tag  Record" postQueryString="false" mediaType="application/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tag/</con:endpoint>
+      <con:request>{ "name": "Lakshmr1","value":"PHC_IX"}</con:request>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="DELETE" id="d4fa66bf-79f3-439b-bac3-6cd82303ad10">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+def job_id='PHC_IX-342'
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tag/'+job_id
+def method = 'DELETE'
+def stepName = 'Delete Tag  Details'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+try{
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+headers.put( "Authorization ", "Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ") 
+responseContent=tc.testSuite.getTestCaseByName("Tag-TestCase").getTestStepByName(stepName).getHttpRequest().setRequestHeaders(headers).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse == '200')
+{
+    assert(slurperResponse == '200')
+}
+else
+{
+    AssertionResult.setFailureMessage('Invalid data: 400/Data not found 404 ')
+}
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Delete Tag  Details" id="05dbdd9e-521f-4814-befe-d8d8e6974dcd">
+    <con:settings/>
+    <con:config method="DELETE" xsi:type="con:HttpRequest" id="deae6f7f-f413-4350-905d-7c2acf12d6d9" name="Delete Tag  Details" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tag/PHC_IX-342</con:endpoint>
+      <con:request/>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="GET" id="cbb1ab03-8773-476f-a82f-c96d5e3cd7ec">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def job_id='AQ342'
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tag/'+job_id
+
+def method = 'GET'
+def stepName = 'Get Tag Details'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+try{
+
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+headers.put( "Authorization ", "Bearer eyJraWQiOiJNUWxsekJaaUdLTWpwR1dKc1JBN0lVS1ZxK0h2enpzU2hMbjY4SWJ3dURjPSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibVdEN1ktOF9Gck5MOFVOMFUzUzhZQSIsInN1YiI6IjQ4ZmNkNjU0LWVjNjktNGJjOC1iZWI4LTNkMGQxYjYyNDgzNCIsImNvZ25pdG86Z3JvdXBzIjpbInVzLXdlc3QtMl9xQXVLWUNwSHlfQVpVUkUiXSwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9xQXVLWUNwSHkiLCJjb2duaXRvOnVzZXJuYW1lIjoiYXp1cmVfbXVyYWxpZGEiLCJub25jZSI6IkZKejk5SWdkWkZ2TmxyOEhVN1N0c0Q2QXRZaTZFZlRHaWtiYkZlS0xpZG5IS0hOS01TZ3NCWTdIR190bmNoc3hBb3I3Y1R0MC12LXI2QWh4ZmYwYktnTG5GUGZ4eDhKRUZiWjBiRkFpdll0emVpczZIY3lmcU9keWJ4OG1SU3FjUmY1VzlxYk1paUY2OTltQjBZV2lNS3p1X3plZ0MwRGp6VTFWSHFKRU5oTSIsImN1c3RvbTplbnRpdGxlbWVudHMiOiJbUE9DLVBIQy1EQVAyLUFQSS1TVE9SQUdFLVJPLCBQT0MtUEhDLURBUDItQVBJLUlOR0VTVElPTi1ST10iLCJhdWQiOiIyZ2M0amVmcXZjYWc0M3YzcGE1a2xsazN1cSIsImlkZW50aXRpZXMiOlt7InVzZXJJZCI6Im11cmFsaWRhIiwicHJvdmlkZXJOYW1lIjoiQVpVUkUiLCJwcm92aWRlclR5cGUiOiJTQU1MIiwiaXNzdWVyIjoiaHR0cHM6XC9cL3N0cy53aW5kb3dzLm5ldFwvYzgwMzYyODMtMTQwOC00ZGM4LWI4NzAtMzFlNzg5YTBhNTI4XC8iLCJwcmltYXJ5IjoidHJ1ZSIsImRhdGVDcmVhdGVkIjoiMTU5NDgwNTgyNjQ5OSJ9XSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1OTUzOTEwOTUsImV4cCI6MTU5NTM5NDY5NSwiaWF0IjoxNTk1MzkxMDk2LCJlbWFpbCI6Im11cmFsaWRoYXJhbi5hbmlzaEBnZW5lLmNvbSJ9.b9oaXSMf9X7-xZ6ich_e0dFBlpzxun5YUcMwV6IDn61Xjf3PvSfz-8im42aAqWU6dDKObtr5XL-MpZVo0d8RqpMjOKoK2uPnlhG6YdIAydMxhyZiHvM6EmhaUFDHML6t2Bf5iVly8IDffWM5kpFLbreDjka0OFsnIjJaGVVVxBzFPyZ2HZauz-Rkti2M0NiEqyv67PPATaRcEw7hGbLoIVdMk5JkxMLnfO0utuqOtPFLG-vavfClA91kYFiSPxrh1708a9s54O0-_OcjQ4ebRBRaSYiifgHjl_hPMULs7Q_KErEt_6HAZ4GSUYUv1RHdpiHGV8y5pJeBgbLi0_LStQ") 
+responseContent=tc.testSuite.getTestCaseByName("Tag-TestCase").getTestStepByName(stepName).getHttpRequest().setRequestHeaders(headers).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse == '200')
+{
+    assert(slurperResponse == '200')
+}
+else
+{
+    AssertionResult.setFailureMessage('Invalid data: 400/Data not found 404 ')
+}
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="httprequest" name="Get Tag Details" id="7ea315cf-458d-426a-89a4-6a8f8ffc962a">
+    <con:settings/>
+    <con:config method="GET" xsi:type="con:HttpRequest" id="8d47fb3b-d0e0-4761-970a-f6f30b08c719" name="Get Tag Details" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:settings/>
+      <con:endpoint>https://phc-dap.apollo.roche.com/apis/v1/tag/AQ342</con:endpoint>
+      <con:request/>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:parameters/>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="UPDATE" id="a91d54a4-80b2-4751-832b-2fb4e8fa7640">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/tagtemplate/'
+
+def method = 'PUT'
+def stepName = 'Update Tag  Record'
+def tc=testRunner.testCase
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+def headers = new StringToStringMap()
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+def jsonText='{ "name": "Rokesh","value":"PHC_IX"}'
+reqheader.setRequestContent(jsonText)
+
+responseContent=tc.testSuite.getTestCaseByName("Tags-TestCase").getTestStepByName(stepName).getPropertyValue("response")</script>
+    </con:config>
+  </con:testStep>
+  <con:properties/>
+  <con:reportParameters/>
+</con:testCase>
