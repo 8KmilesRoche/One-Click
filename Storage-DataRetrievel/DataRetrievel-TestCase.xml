@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="fdc6db7b-612f-46a9-aa4b-505821dcf982" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="DataRetrievel-TestCase" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="fdc6db7b-612f-46a9-aa4b-505821dcf982fileName">DataRetrievel-TestCase</con:setting>
+  </con:settings>
+  <con:savedRecentRuns>1</con:savedRecentRuns>
+  <con:testStep type="groovy" name="POST" id="9e6ac1d1-03f4-41ef-89a2-7bfc5708ecdf">
+    <con:settings/>
+    <con:config>
+      <script>import static com.eviware.soapui.impl.wsdl.teststeps.registry.HttpRequestStepFactory.HTTPREQUEST_TYPE
+import com.eviware.soapui.support.types.*
+import groovy.json.JsonSlurper
+
+def endpoint = 'https://phc-dap.apollo.roche.com/apis/v1/storage/retrieve '
+def method = 'POST'
+def stepName = 'Data Retrievel'
+def tc=testRunner.testCase
+
+tc.addTestStep(HTTPREQUEST_TYPE , stepName, endpoint, method)
+context.testCase.getTestStepByName(stepName).testRequest.setMediaType('application/json')
+def reqheader = context.testCase.getTestStepByName(stepName).getTestRequest()
+//def jsonText='{ "storage_type": "s3 ","expiry_time":" 60m",   "destinationDataDetails":'{"access_key_id":"1234","secret_access_key":"qswert","region":"us-west-2","url":"s3://destinationbucketname.amazon.com","root_folder":"/2020-06-16/patientfiles","file_name":"retrievel.tar"}',"applicableTimeWindow":'{"start_time":"2020-03-20T09:12:28.000Z","end_time":"2020-06-20T09:12:28.000Z"}''
+def jsonText='{"storage_type":"s3","expiry_time":"60", "destinationDataDetails":'{"access_key_id":"1234","secret_access_key":"qswert","region":"us-west-2","url":"s3://destinationbucketname.amazon.com","root_folder":"/2020-06-16/patientfiles","file_name":"retrievel.tar"}',"applicableTimeWindow":'{"start_time":"2020-03-20T09:12:28.000Z","end_time":"2020-06-20T09:12:28.000Z"}'}'
+reqheader.setRequestContent(jsonText)
+responseContent=tc.testSuite.getTestCaseByName("DataRetrievel-testcase").getTestStepByName(stepName).getPropertyValue("response")
+slurperResponse=new JsonSlurper(). parseText(responseContent).value
+log.info(slurperResponse)
+if(slurperResponse != '200')
+{
+	AssertionResult.setFailureMessage('Authorization failed: 401')
+}
+else
+{
+	log.info("authorization successfull")
+}
+catch(Exception e){
+log.info(e)
+}</script>
+    </con:config>
+  </con:testStep>
+  <con:properties/>
+  <con:reportParameters/>
+</con:testCase>
